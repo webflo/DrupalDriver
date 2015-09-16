@@ -4,6 +4,7 @@ namespace Drupal\Driver\Cores;
 
 use Drupal\Component\Utility\Random;
 use Drupal\Core\DrupalKernel;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Driver\Exception\BootstrapException;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\node\Entity\Node;
@@ -305,6 +306,26 @@ class Drupal8 extends AbstractCore {
     $term = $term instanceof TermInterface ? $term : Term::load($term->tid);
     if ($term instanceof TermInterface) {
       $term->delete();
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function entityCreate($entity_type, $entity) {
+    $this->expandEntityFields($entity_type, $entity);
+    $entity = entity_create($entity_type, (array) $entity);
+    $entity->save();
+    return $entity;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function entityDelete($entity_type, $entity) {
+    $entity = $entity instanceof EntityInterface ? $entity : entity_load($entity_type, $entity);
+    if ($entity instanceof EntityInterface) {
+      $entity->delete();
     }
   }
 

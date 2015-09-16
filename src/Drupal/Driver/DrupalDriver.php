@@ -225,6 +225,20 @@ class DrupalDriver implements DriverInterface, SubDriverFinderInterface {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function entityCreate($entity_type, $entity) {
+    return $this->getCore()->entityCreate($entity_type, $entity);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function entityDelete($entity_type, $entity) {
+    return $this->getCore()->entityDelete($entity_type, $entity);
+  }
+
+  /**
    * {@inheritDoc}
    */
   public function createNode($node) {
